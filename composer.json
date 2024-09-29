@@ -3,7 +3,7 @@
   "type": "silverstripe-recipe",
   "description": "Core modules for Silverstripe CMS",
   "require": {
-    "php": ">8.2",
+    "php": ">8.3",
     "silverstripe/spamprotection": "^4.1",
     "silverstripe/recipe-cms": "^5",
     "silverstripe/recipe-plugin": "^2.0",
@@ -39,7 +39,8 @@
     "sunnysideup/yes-no-any-filter": "dev-master",
     "undefinedoffset/silverstripe-nocaptcha": "^2.1",
     "undefinedoffset/sortablegridfield": "^2.0",
-    "symbiote/silverstripe-gridfieldextensions": "^4"
+    "symbiote/silverstripe-gridfieldextensions": "^4",
+    "paragonie/constant_time_encoding": "^2,6"
   },
   "require-dev": {
     "sunnysideup/templateoverview": "dev-master",
