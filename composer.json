@@ -14,6 +14,7 @@
     "silverstripe/totp-authenticator": "^5.0",
     "silverstripe/login-forms": "^5",
     "sunnysideup/avoid-child-deletion": "dev-master",
+    "sunnysideup/basic-auth-better": "dev-main",
     "sunnysideup/cleaner_tinymce_config": "dev-master",
     "sunnysideup/cleanup-tables": "dev-master",
     "sunnysideup/cms-niceties": "dev-master",
