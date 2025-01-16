@@ -59,6 +59,7 @@
   },
   "suggest": {
     "sunnysideup/dataobjectsorter": "dev-master",
+    "silverleague/ideannotator": "",
     "symbiote/silverstripe-gridfieldextensions": "Extends SilverStripe's GridField with additional features, such as sortable rows and inline editing.",
     "undefinedoffset/silverstripe-nocaptcha": "*",
     "undefinedoffset/sortablegridfield": "*",
