@@ -39,6 +39,7 @@
     "sunnysideup/simple-template-caching": "dev-master",
     "sunnysideup/site-wide-search": "dev-master",
     "sunnysideup/test-email": "dev-master",
+    "sunnysideup/userforms-block-spam-with-keywords": "dev-main",
     "sunnysideup/version-pruner": "dev-master",
     "sunnysideup/yes-no-any-filter": "dev-master",
     "undefinedoffset/silverstripe-nocaptcha": "^2.1",
