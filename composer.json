@@ -41,13 +41,13 @@
     "sunnysideup/test-email": "dev-master",
     "sunnysideup/userforms-block-spam-with-keywords": "dev-main",
     "sunnysideup/version-pruner": "dev-master",
+    "sunnysideup/export-all-from-modeladmin": "dev-master",
     "sunnysideup/yes-no-any-filter": "dev-master",
     "undefinedoffset/silverstripe-nocaptcha": "^2.1",
     "undefinedoffset/sortablegridfield": "^2.0",
     "symbiote/silverstripe-gridfieldextensions": "^4",
     "silverstripe/hybridsessions": "^3",
-    "paragonie/constant_time_encoding": "^2.6",
-    "sunnysideup/export-all-from-modeladmin": "dev-master"
+    "paragonie/constant_time_encoding": "^2.6"
   },
   "require-dev": {
     "sunnysideup/templateoverview": "dev-master",
