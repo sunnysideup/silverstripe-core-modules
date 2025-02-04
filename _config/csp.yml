@@ -1,0 +1,262 @@
+---
+Name: defaul-csp-headers
+After:
+  - '#CSPHeaders'
+---
+# refresh calculated SRI values on dev/build
+Firesphere\CSPHeaders\Models\SRI:
+  clear_sri_on_build: true
+
+Firesphere\CSPHeaders\View\CSPBackend:
+  # SubResource Integrity
+
+  jsSRI: true
+  cssSRI: true
+
+  useNonce: true
+
+  headers:
+    referrer-policy: strict-origin-when-cross-origin
+    # referrer: strict-origin-when-cross-origin
+    # frame-options: SAMEORIGIN # allow video
+    # x-frame-options: 'sameorigin' # allow video
+    # access-control-allow-origin: '*' # https://stackoverflow.com/questions/10636611/how-does-the-access-control-allow-origin-header-work
+    x-xss-protection: 1; mode=block
+    x-content-type-options: nosniff
+    strict-transport-security: 'max-age=31536000; includeSubDomains'
+
+  # Strict Transport Security Header
+  upgrade-insecure-requests: true
+  HSTS:
+    enabled: true
+    max-age: 31536000
+    include_subdomains: true
+
+  csp_config:
+    enabled: false
+    report-only: true
+
+---
+Only:
+  environment: 'dev'
+After: '*'
+---
+Firesphere\CSPHeaders\View\CSPBackend:
+  upgrade-insecure-requests: false
+  csp_config:
+    report-only: true
+
+  # report-to: 'https://o4504115515686912.ingest.sentry.io/api/4504373260386304/security/?sentry_key=b2c30554689049048fdf0b5f45af84d4'
+  # report-uri: 'https://o4504115515686912.ingest.sentry.io/api/4504373260386304/security/?sentry_key=b2c30554689049048fdf0b5f45af84d4'
+
+  # base-uri:
+  #   allow: []
+  #   self: true
+
+  # default-src:
+  #   allow:
+  #     - 'stats.g.doubleclick.net' # TO DO - REMOVE - BLOCK _ ADVERTISING
+
+  #     - 'browser.sentry-cdn.com'
+
+  #     - 'buzzsprout.com'
+  #     - 'www.buzzsprout.com'
+
+  #     - 'connect.facebook.net'
+
+  #     - 'googleapis.com'
+  #     - '*.googleapis.com'
+
+  #     - 'gstatic.com'
+  #     - '*.gstatic.com'
+  #     - 'fonts.gstatic.com'
+
+  #     - 'google-analytics.com'
+  #     - '*.google-analytics.com'
+  #     - 'analytics.google.com'
+  #     - '*.analytics.google.com'
+
+  #     - 'www.google'
+
+  #     - 'googletagmanager.com'
+  #     - '*.googletagmanager.com'
+
+  #     - 'translate.google.com'
+  #     - '*.translate.google.com'
+
+  #     - 'youtube.com'
+  #     - '*.youtube.com'
+
+  #     - 'youtu.be'
+  #     - '*.youtu.be'
+
+  #     - 'youtube-nocookie.com'
+  #     - '*.youtube-nocookie.com'
+
+  #     - 'vimeo.com'
+  #     - '*.vimeo.com'
+
+  #   self: true
+
+  # frame-src:
+  #   self: false
+
+  # connect-src:
+  #   self: true
+  #   allow:
+  #     - 'www.google-analytics.com'
+  #     - 'analytics.google.com'
+  #     - 'stats.g.doubleclick.net' # TO DO - REMOVE - BLOCK _ ADVERTISING
+
+  # font-src:
+  #   data: true
+  #   self: true
+  #   allow:
+  #     - 'browser.sentry-cdn.com'
+
+  #     - 'buzzsprout.com'
+  #     - 'www.buzzsprout.com'
+
+  #     - 'connect.facebook.net'
+
+  #     - 'googleapis.com'
+  #     - '*.googleapis.com'
+
+  #     - 'gstatic.com'
+  #     - '*.gstatic.com'
+  #     - 'fonts.gstatic.com'
+
+  #     - 'google-analytics.com'
+  #     - '*.google-analytics.com'
+  #     - 'analytics.google.com'
+  #     - '*.analytics.google.com'
+
+  #     - 'www.google'
+
+  #     - 'googletagmanager.com'
+  #     - '*.googletagmanager.com'
+
+  #     - 'translate.google.com'
+  #     - '*.translate.google.com'
+
+  #     - 'youtube.com'
+  #     - '*.youtube.com'
+
+  #     - 'youtu.be'
+  #     - '*.youtu.be'
+
+  #     - 'youtube-nocookie.com'
+  #     - '*.youtube-nocookie.com'
+
+  #     - 'vimeo.com'
+  #     - '*.vimeo.com'
+
+  # form-action:
+  #   self: true
+
+  # frame-ancestors:
+  #   self: true
+
+  # img-src:
+  #   self: true
+  #   data: true
+  #   blob: true
+  #   allow:
+  #     - 'browser.sentry-cdn.com'
+
+  #     - 'buzzsprout.com'
+  #     - 'www.buzzsprout.com'
+
+  #     - 'connect.facebook.net'
+
+  #     - 'googleapis.com'
+  #     - '*.googleapis.com'
+
+  #     - 'gstatic.com'
+  #     - '*.gstatic.com'
+  #     - 'fonts.gstatic.com'
+
+  #     - 'google-analytics.com'
+  #     - '*.google-analytics.com'
+  #     - 'analytics.google.com'
+  #     - '*.analytics.google.com'
+
+  #     - 'googletagmanager.com'
+  #     - '*.googletagmanager.com'
+
+  #     - 'translate.google.com'
+  #     - '*.translate.google.com'
+
+  #     - 'youtube.com'
+  #     - '*.youtube.com'
+
+  #     - 'youtu.be'
+  #     - '*.youtu.be'
+
+  #     - 'youtube-nocookie.com'
+  #     - '*.youtube-nocookie.com'
+
+  #     - 'vimeo.com'
+  #     - '*.vimeo.com'
+
+  # media-src:
+  #   data: true
+
+  # object-src: []
+
+  # child-src: []
+
+  # plugin-types: []
+
+  # script-src:
+  #   self: true
+  #   data: true
+  #   blob: true
+  #   unsafe-inline: true
+  #   unsafe-eval: true
+  #   allow:
+  #     - 'browser.sentry-cdn.com'
+
+  #     - 'buzzsprout.com'
+  #     - 'www.buzzsprout.com'
+
+  #     - 'connect.facebook.net'
+
+  #     - 'googleapis.com'
+  #     - '*.googleapis.com'
+
+  #     - 'gstatic.com'
+  #     - '*.gstatic.com'
+
+  #     - 'google-analytics.com'
+  #     - '*.google-analytics.com'
+  #     - 'analytics.google.com'
+  #     - '*.analytics.google.com'
+
+  #     - 'www.google'
+
+  #     - 'googletagmanager.com'
+  #     - '*.googletagmanager.com'
+
+  #     - 'stats.g.doubleclick.net' # TO DO - REMOVE - BLOCK _ ADVERTISING
+
+  #     - 'translate.google.com'
+  #     - '*.translate.google.com'
+
+  #     - 'youtube.com'
+  #     - '*.youtube.com'
+
+  #     - 'youtu.be'
+  #     - '*.youtu.be'
+
+  #     - 'youtube-nocookie.com'
+  #     - '*.youtube-nocookie.com'
+
+  #     - 'vimeo.com'
+  #     - '*.vimeo.com'
+
+  # style-src:
+  #   self: true
+  #   unsafe-inline: true
+  #   allow:
+  #     - 'fonts.googleapis.com'
