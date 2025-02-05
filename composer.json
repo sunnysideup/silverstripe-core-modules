@@ -46,7 +46,8 @@
     "undefinedoffset/sortablegridfield": "^2.0",
     "symbiote/silverstripe-gridfieldextensions": "^4",
     "silverstripe/hybridsessions": "^3",
-    "paragonie/constant_time_encoding": "^2.6"
+    "paragonie/constant_time_encoding": "^2.6",
+    "silverstripe/lumberjack": "^2 || ^3.0"
   },
   "require-dev": {
     "sunnysideup/templateoverview": "dev-master",
