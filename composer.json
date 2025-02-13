@@ -152,10 +152,6 @@
         {
             "type": "vcs",
             "url": "git@github.com:sunnysideup/silverstripe-schema.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://codeberg.org/S-GrabhamMadden/silverstripe-csp-headers"
         }
     ],
     "config": {
