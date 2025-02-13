@@ -2,6 +2,7 @@
 
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Environment;
+use SilverStripe\HybridSessions\HybridSession;
 
 if (! Director::isDev()) {
     if (isset($_GET['REQUEST_URI']) && 0 === strpos($_SERVER['REQUEST_URI'], '/dev/') || Environment::isCli()) {
@@ -12,7 +13,7 @@ if (! Director::isDev()) {
             if (! Environment::getEnv('SS_SESSION_KEY')) {
                 user_error('Make sure to complete HybridSession Settings - see: https://github.com/silverstripe/silverstripe-hybridsessions');
             }
+            HybridSession::init(Environment::getEnv('SS_SESSION_KEY'));
         }
     }
-    // HybridSession::init(Environment::getEnv('SS_SESSION_KEY'));
 }
