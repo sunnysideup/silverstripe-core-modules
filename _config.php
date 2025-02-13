@@ -14,4 +14,5 @@ if (! Director::isDev()) {
             }
         }
     }
+    // HybridSession::init(Environment::getEnv('SS_SESSION_KEY'));
 }
