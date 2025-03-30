@@ -45,7 +45,7 @@
         "symbiote/silverstripe-grouped-cms-menu": "^4.1",
         "silverstripe/lumberjack": "^2 || ^3.0",
         "silverstripe/hybridsessions": "^3",
-        "paragonie/constant_time_encoding": "^3",
+        "paragonie/constant_time_encoding": "^2 || ^3",
         "silverstripe/mfa": "^5.0",
         "silverstripe/totp-authenticator": "^5.0"
     },
