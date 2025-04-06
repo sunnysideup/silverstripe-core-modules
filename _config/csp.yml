@@ -1,7 +1,7 @@
 ---
 Name: defaul-csp-headers
 After:
-  - '#CSPHeaders'
+  - "#CSPHeaders"
 ---
 # refresh calculated SRI values on dev/build
 Firesphere\CSPHeaders\Models\SRI:
@@ -23,7 +23,8 @@ Firesphere\CSPHeaders\View\CSPBackend:
     # access-control-allow-origin: '*' # https://stackoverflow.com/questions/10636611/how-does-the-access-control-allow-origin-header-work
     x-xss-protection: 1; mode=block
     x-content-type-options: nosniff
-    strict-transport-security: 'max-age=31536000; includeSubDomains'
+    strict-transport-security: "max-age=31536000; includeSubDomains"
+    cross-origin-opener-policy: same-origin-allow-popups
 
   # Strict Transport Security Header
   upgrade-insecure-requests: true
@@ -34,12 +35,12 @@ Firesphere\CSPHeaders\View\CSPBackend:
 
   csp_config:
     enabled: false
-    report-only: true
+    report-only: false
 
 ---
 Only:
-  environment: 'dev'
-After: '*'
+  environment: "dev"
+After: "*"
 ---
 Firesphere\CSPHeaders\View\CSPBackend:
   upgrade-insecure-requests: false

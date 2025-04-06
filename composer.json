@@ -4,6 +4,7 @@
     "description": "Core modules for Silverstripe CMS",
     "require": {
         "php": ">8.3",
+        "firesphere/cspheaders": "dev-main",
         "silverstripe/mimevalidator": "*",
         "silverstripe/vendor-plugin": "^2",
         "silverstripe/spamprotection": "^4.1",
