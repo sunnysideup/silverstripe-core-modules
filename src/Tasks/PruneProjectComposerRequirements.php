@@ -37,7 +37,6 @@ class PruneProjectComposerRequirements extends BuildTask
         } catch (RuntimeException $e) {
             echo 'Error: ' . $e->getMessage() . PHP_EOL;
         }
-
     }
 
     protected function removeUnusedPackages(string $basePath): void
@@ -85,7 +84,7 @@ class PruneProjectComposerRequirements extends BuildTask
                     continue;
                 }
                 if (isset($baseRequire[$package])) {
-                    DB::alteration_message('Removing ' . $package . ' from ' . $baseComposerPath . ' as it is also required by '.$packageName, 'deleted');
+                    DB::alteration_message('Removing ' . $package . ' from ' . $baseComposerPath . ' as it is also required by ' . $packageName, 'deleted');
                     unset($baseRequire[$package]);
                 }
             }
@@ -95,7 +94,7 @@ class PruneProjectComposerRequirements extends BuildTask
 
         $jsonData = json_encode($baseComposer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 
-        if ($jsonData === false) {
+        if ((bool) $jsonData === false) {
             throw new RuntimeException('Failed to encode JSON for base composer.json: ' . json_last_error_msg());
         }
 
@@ -130,5 +129,4 @@ class PruneProjectComposerRequirements extends BuildTask
     {
         return Director::baseFolder() . '/vendor';
     }
-
 }
