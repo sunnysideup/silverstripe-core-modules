@@ -3,7 +3,19 @@
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Environment;
 
-if (! Director::isDev()) {
+if (Director::isDev()) {
+    if (!Environment::getEnv('SS_ALLOW_AS_DEV_SITE')) {
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN';
+        if (strpos($ip, ',') !== false) {
+            $ip = explode(',', $ip)[0];
+        }
+        $allowed = array_filter(array_merge(explode(',', Environment::getEnv('SS_ALLOW_AS_DEV_SITE')), ['127.0.0.1', '::1']));
+        if (! in_array($ip, $allowed)) {
+            die('Site under urgent maintenance. Please come back soon.');
+        }
+        unset($allowed, $ip);
+    }
+} else {
     if (isset($_GET['REQUEST_URI']) && 0 === strpos($_SERVER['REQUEST_URI'], '/dev/') || Environment::isCli()) {
         if (! Environment::getEnv('SS_MFA_SECRET_KEY')) {
             user_error(
