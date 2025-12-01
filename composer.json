@@ -49,7 +49,7 @@
     "silverstripe/mfa": "^5.0",
     "silverstripe/totp-authenticator": "^5.0",
     "sunnysideup/search-on-version-status": "dev-master",
-    "silverstripe/securityreport": => "*"
+    "silverstripe/securityreport": "*"
   },
   "require-dev": {
     "sunnysideup/core-modules-dev": "dev-master"
