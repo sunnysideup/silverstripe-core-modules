@@ -56,6 +56,7 @@
   },
   "suggest": {
     "sunnysideup/dataobjectsorter": "dev-master",
+    "lekoala/silverstripe-encrypt": "encrypt key data",
     "silverleague/ideannotator": "",
     "symbiote/silverstripe-gridfieldextensions": "Extends SilverStripe's GridField with additional features, such as sortable rows and inline editing.",
     "undefinedoffset/silverstripe-nocaptcha": "*",
