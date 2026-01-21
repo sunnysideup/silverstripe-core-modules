@@ -39,6 +39,7 @@
     "sunnysideup/version-pruner": "dev-master",
     "sunnysideup/export-all-from-modeladmin": "dev-master",
     "sunnysideup/yes-no-any-filter": "dev-master",
+    "sunnysideup/dataintegritytests": "dev-master",
     "undefinedoffset/silverstripe-nocaptcha": "^2.1",
     "undefinedoffset/sortablegridfield": "^2.0",
     "symbiote/silverstripe-gridfieldextensions": "^4",
