@@ -13,6 +13,7 @@
     "silverstripe/login-forms": "^5",
     "sunnysideup/avoid-child-deletion": "dev-master",
     "sunnysideup/basic-auth-better": "dev-main",
+    "sunnysideup/branding": "dev-main",
     "sunnysideup/cleaner_tinymce_config": "dev-master",
     "sunnysideup/cms-niceties": "dev-master",
     "sunnysideup/cms_edit_link_field": "dev-master",
