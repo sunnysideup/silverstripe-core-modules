@@ -4,7 +4,7 @@ use SilverStripe\Control\Director;
 use SilverStripe\Core\Environment;
 
 if (Director::isDev()) {
-    if (!Environment::getEnv('SS_ALLOW_AS_DEV_SITE')) {
+    if (! Environment::getEnv('SS_ALLOW_AS_DEV_SITE')) {
         $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN';
         if (strpos($ip, ',') !== false) {
             $ip = explode(',', $ip)[0];

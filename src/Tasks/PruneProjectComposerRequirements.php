@@ -44,7 +44,7 @@ class PruneProjectComposerRequirements extends BuildTask
         $baseComposerPath = rtrim($basePath, '/') . '/composer.json';
         $skip = $this->config()->get('packages_to_skip');
 
-        if (!file_exists($baseComposerPath)) {
+        if (! file_exists($baseComposerPath)) {
             throw new RuntimeException('Base composer.json not found at: ' . $baseComposerPath);
         }
 
@@ -55,12 +55,11 @@ class PruneProjectComposerRequirements extends BuildTask
             throw new RuntimeException('Invalid JSON in base composer.json.');
         }
 
-        if (!isset($baseComposer['require'])) {
+        if (! isset($baseComposer['require'])) {
             throw new RuntimeException('Base composer.json does not have a "require" section.');
         }
 
         $baseRequire = $baseComposer['require'];
-
 
         $composerFiles = $this->getComposerFiles();
 
@@ -72,7 +71,7 @@ class PruneProjectComposerRequirements extends BuildTask
                 continue;
             }
 
-            if (!isset($packageComposer['require'])) {
+            if (! isset($packageComposer['require'])) {
                 DB::alteration_message('Skipping file without "require" section: ' . $packageComposerPath);
                 continue;
             }
