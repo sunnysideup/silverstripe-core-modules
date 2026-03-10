@@ -57,6 +57,7 @@
     "sunnysideup/core-modules-dev": "dev-master"
   },
   "suggest": {
+    "gurucomkz/silverstripe-critical-path-css": "faster loading",
     "sunnysideup/dataobjectsorter": "dev-master",
     "lekoala/silverstripe-encrypt": "encrypt key data",
     "silverleague/ideannotator": "",
