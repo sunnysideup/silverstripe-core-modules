@@ -6,16 +6,27 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;
 use SilverStripe\Control\Director;
+use SilverStripe\Core\Flushable;
 use SilverStripe\Dev\BuildTask;
 use SilverStripe\ORM\DB;
 
-class PruneProjectComposerRequirements extends BuildTask
+class PruneProjectComposerRequirements extends BuildTask implements Flushable
 {
     protected $title = 'Prune Project Composer Requirements';
 
     protected $description = 'Removes all requirements from the core that are also required by vendor packages.';
 
     private static $segment = 'prune-project-composer-requirements';
+
+    private static $run_on_flush = true;
+
+    public static function flush()
+    {
+        if (self::config()->get('run_on_flush') && Director::is_cli() && Director::isDev()) {
+            singleton(self::class)->run(null);
+        }
+    }
+
 
     private static $packages_to_skip = [
         'silverstripe/recipe-cms',
