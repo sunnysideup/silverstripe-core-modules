@@ -22,7 +22,7 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
 
     public static function flush()
     {
-        if (self::config()->get('run_on_flush')) {
+        if (self::config()->get('run_on_flush') && Director::is_cli() && Director::isDev()) {
             singleton(self::class)->run(null);
         }
     }
