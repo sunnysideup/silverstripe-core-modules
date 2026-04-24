@@ -4,8 +4,6 @@
   "description": "Core modules for Silverstripe CMS",
   "require": {
     "php": ">8.3",
-    "silverstripe/mimevalidator": "*",
-    "silverstripe/vendor-plugin": "^2",
     "silverstripe/spamprotection": "^4.1",
     "silverstripe/recipe-cms": "^5",
     "silverstripe/recipe-plugin": "^2.0",
@@ -40,6 +38,7 @@
     "sunnysideup/export-all-from-modeladmin": "5.x-dev",
     "sunnysideup/yes-no-any-filter": "5.x-dev",
     "sunnysideup/dataintegritytests": "5.x-dev",
+    "sunnysideup/search-on-version-status": "5.x-dev",
     "undefinedoffset/silverstripe-nocaptcha": "^2.1",
     "undefinedoffset/sortablegridfield": "^2.0",
     "symbiote/silverstripe-gridfieldextensions": "^4",
@@ -49,7 +48,6 @@
     "paragonie/constant_time_encoding": "^2 || ^3",
     "silverstripe/mfa": "^5.0",
     "silverstripe/totp-authenticator": "^5.0",
-    "sunnysideup/search-on-version-status": "5.x-dev",
     "silverstripe/securityreport": "*"
   },
   "require-dev": {

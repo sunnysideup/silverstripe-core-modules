@@ -34,7 +34,6 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
      * @config
      * @var array
      */
-
     private static $packages_to_skip = [
         'silverstripe/recipe-cms',
         'silverstripe/recipe-core',
