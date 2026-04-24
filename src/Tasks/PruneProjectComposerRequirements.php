@@ -51,8 +51,8 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
 
         try {
             $this->removeUnusedPackages($baseFolder);
-        } catch (RuntimeException $e) {
-            echo 'Error: ' . $e->getMessage() . PHP_EOL;
+        } catch (RuntimeException $runtimeException) {
+            echo 'Error: ' . $runtimeException->getMessage() . PHP_EOL;
         }
     }
 
@@ -99,6 +99,7 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
                 if (in_array($package, $skip)) {
                     continue;
                 }
+
                 if (isset($baseRequire[$package])) {
                     DB::alteration_message('Removing ' . $package . ' from ' . $baseComposerPath . ' as it is also required by ' . $packageName, 'deleted');
                     unset($baseRequire[$package]);
@@ -138,6 +139,7 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
                 }
             }
         }
+
         return $composerFiles;
     }
 
