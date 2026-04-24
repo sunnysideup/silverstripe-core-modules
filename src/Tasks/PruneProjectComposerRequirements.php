@@ -27,7 +27,13 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
         }
     }
 
-
+    /**
+     * List of packages to skip when pruning requirements.
+     * These packages will not be removed from the base composer.json even if they are required by vendor packages.
+     *
+     * @config
+     * @var array
+     */
     private static $packages_to_skip = [
         'silverstripe/recipe-cms',
         'silverstripe/recipe-core',
