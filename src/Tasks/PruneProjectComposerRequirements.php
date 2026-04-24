@@ -55,6 +55,7 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
         } catch (RuntimeException $runtimeException) {
             echo 'Error: ' . $runtimeException->getMessage() . PHP_EOL;
         }
+
         return 0;
     }
 
