@@ -3,20 +3,17 @@
 use SilverStripe\HybridSessions\HybridSession;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Environment;
+use SilverStripe\Security\Security;
 
 if (Director::isDev()) {
-    if (! Environment::getEnv('SS_ALLOW_AS_DEV_SITE')) {
-        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN';
-        if (str_contains((string) $ip, ',')) {
-            $ip = explode(',', (string) $ip)[0];
-        }
-        $allowed = array_filter(array_merge(explode(',', Environment::getEnv('SS_ALLOW_AS_DEV_SITE')), ['127.0.0.1', '::1']));
-        if (! in_array($ip, $allowed)) {
-            die('Site under urgent maintenance. Please come back soon.');
+    if (!Security::allow_dev()) {
+        if (Director::is_cli()) {
+            echo "Set SS_ALLOW_AS_DEV_SITE in .env for local installs. ";
         }
 
-        unset($allowed, $ip);
+        die('Site under urgent maintenance. Please come back soon.');
     }
+
 } elseif (isset($_GET['REQUEST_URI']) && str_starts_with((string) $_SERVER['REQUEST_URI'], '/dev/') || Environment::isCli()) {
     if (! Environment::getEnv('SS_MFA_SECRET_KEY')) {
         user_error(
