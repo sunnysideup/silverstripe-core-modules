@@ -13,7 +13,6 @@
     "sunnysideup/cms_edit_link_field": "dev-main",
     "sunnysideup/email_address_database_field": "dev-main",
     "sunnysideup/userforms-block-spam-with-keywords": "dev-main",
-
     "undefinedoffset/silverstripe-nocaptcha": "^3.1",
     "undefinedoffset/sortablegridfield": "^3.0",
     "symbiote/silverstripe-gridfieldextensions": "^5.2",
@@ -48,7 +47,7 @@
     "sunnysideup/yes-no-any-filter": "dev-main",
     "sunnysideup/dataintegritytests": "dev-main",
     "sunnysideup/search-on-version-status": "dev-main",
-    "symbiote/silverstripe-grouped-cms-menu": "dev-main",
+    "bigfork/silverstripe-grouped-cms-menu": "dev-main",
     "silverstripe/securityreport": "*"    
   },
   "require-dev": {
