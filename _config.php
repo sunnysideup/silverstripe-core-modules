@@ -10,7 +10,6 @@ if (Director::isDev()) {
         if (str_contains((string) $ip, ',')) {
             $ip = explode(',', (string) $ip)[0];
         }
-
         $allowed = array_filter(array_merge(explode(',', Environment::getEnv('SS_ALLOW_AS_DEV_SITE')), ['127.0.0.1', '::1']));
         if (! in_array($ip, $allowed)) {
             die('Site under urgent maintenance. Please come back soon.');
