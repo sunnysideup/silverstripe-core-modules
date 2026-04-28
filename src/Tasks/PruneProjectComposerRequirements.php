@@ -2,8 +2,9 @@
 
 namespace Sunnysideup\CoreModules\Tasks;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use SilverStripe\Console\PolyOutput;
+use SilverStripe\PolyExecution\PolyOutput;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;
@@ -16,7 +17,7 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
 {
     protected string $title = 'Prune Project Composer Requirements';
 
-    protected $description = 'Removes all requirements from the core that are also required by vendor packages.';
+    protected static string $description = 'Removes all requirements from the core that are also required by vendor packages.';
 
     protected static string $commandName = 'prune-project-composer-requirements';
 
@@ -56,7 +57,7 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
             echo 'Error: ' . $runtimeException->getMessage() . PHP_EOL;
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     protected function removeUnusedPackages(string $basePath): void
