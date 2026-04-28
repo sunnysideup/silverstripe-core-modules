@@ -47,7 +47,7 @@
     "sunnysideup/yes-no-any-filter": "dev-main",
     "sunnysideup/dataintegritytests": "dev-main",
     "sunnysideup/search-on-version-status": "dev-main",
-    "bigfork/silverstripe-grouped-cms-menu-fork": "dev-main",
+    "bigfork/silverstripe-grouped-cms-menu-fork": "dev-master",
     "silverstripe/securityreport": "*"    
   },
   "require-dev": {
