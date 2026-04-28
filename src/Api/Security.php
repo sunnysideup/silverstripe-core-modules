@@ -138,7 +138,7 @@ class Security implements Flushable
      */
     private static function is_local_hostname(string $host): bool
     {
-        $localTlds = ['localhost', 'test', 'local', 'localhost.localdomain', 'ddev.site'];
+        $localTlds = ['localhost', 'test', 'local', 'localhost.localdomain', 'ddev.site', '.ss4'];
         foreach ($localTlds as $tld) {
             if ($host === $tld || str_ends_with($host, '.' . $tld)) {
                 return true;
