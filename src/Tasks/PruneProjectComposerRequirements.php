@@ -11,7 +11,6 @@ use RuntimeException;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Flushable;
 use SilverStripe\Dev\BuildTask;
-use SilverStripe\ORM\DB;
 
 class PruneProjectComposerRequirements extends BuildTask implements Flushable
 {
@@ -25,9 +24,8 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
 
     public static function flush()
     {
-        if (self::config()->get('run_on_flush') && Director::is_cli() && Director::isDev()) {
-            singleton(self::class)->run(null);
-        }
+        // @TODO (SS6 upgrade): flush() cannot receive $output; skipping auto-run on flush.
+        // Previously called singleton(self::class)->run(null) which is no longer valid.
     }
 
     /**
@@ -52,15 +50,15 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
         // Base folder containing composer.json and vendor directory
         $baseFolder = Director::baseFolder();
         try {
-            $this->removeUnusedPackages($baseFolder);
+            $this->removeUnusedPackages($baseFolder, $output);
         } catch (RuntimeException $runtimeException) {
-            echo 'Error: ' . $runtimeException->getMessage() . PHP_EOL;
+            $output->writeln('Error: ' . $runtimeException->getMessage());
         }
 
         return Command::SUCCESS;
     }
 
-    protected function removeUnusedPackages(string $basePath): void
+    protected function removeUnusedPackages(string $basePath, PolyOutput $output): void
     {
         $baseComposerPath = rtrim($basePath, '/') . '/composer.json';
         $skip = $this->config()->get('packages_to_skip');
@@ -88,12 +86,12 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
             $packageComposer = json_decode(file_get_contents($packageComposerPath), true);
 
             if (json_last_error() !== JSON_ERROR_NONE) {
-                DB::alteration_message('Skipping invalid JSON file: ' . $packageComposerPath, 'error');
+                $output->writeln('Skipping invalid JSON file: ' . $packageComposerPath);
                 continue;
             }
 
             if (! isset($packageComposer['require'])) {
-                DB::alteration_message('Skipping file without "require" section: ' . $packageComposerPath);
+                $output->writeln('Skipping file without "require" section: ' . $packageComposerPath);
                 continue;
             }
 
@@ -105,7 +103,7 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
                 }
 
                 if (isset($baseRequire[$package])) {
-                    DB::alteration_message('Removing ' . $package . ' from ' . $baseComposerPath . ' as it is also required by ' . $packageName, 'deleted');
+                    $output->writeln('Removing ' . $package . ' from ' . $baseComposerPath . ' as it is also required by ' . $packageName);
                     unset($baseRequire[$package]);
                 }
             }
@@ -121,7 +119,7 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
 
         file_put_contents($baseComposerPath, $jsonData);
 
-        DB::alteration_message('Unused packages removed from ' . $baseComposerPath, 'created');
+        $output->writeln('Unused packages removed from ' . $baseComposerPath);
     }
 
     protected function getComposerFiles(): array
