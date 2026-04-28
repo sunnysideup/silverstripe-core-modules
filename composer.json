@@ -4,54 +4,26 @@
   "description": "Core modules for Silverstripe CMS",
   "require": {
     "php": ">8.3",
-    "silverstripe/spamprotection": "^4.1",
-    "silverstripe/recipe-cms": "^5",
+    "silverstripe/spamprotection": "^5.0",
+    "silverstripe/recipe-cms": "^6.0",
     "silverstripe/recipe-plugin": "^2.0",
-    "wilr/silverstripe-googlesitemaps": "^3",
-    "silverstripe/login-forms": "^5",
-    "sunnysideup/avoid-child-deletion": "5.x-dev",
-    "sunnysideup/basic-auth-better": "5.x-dev",
-    "sunnysideup/branding": "5.x-dev",
-    "sunnysideup/cleaner_tinymce_config": "5.x-dev",
-    "sunnysideup/cms-niceties": "5.x-dev",
-    "sunnysideup/cms_edit_link_field": "5.x-dev",
-    "sunnysideup/dashboard-welcome-quicklinks": "5.x-dev",
-    "sunnysideup/duplicate-urlsegments": "5.x-dev",
-    "sunnysideup/email_address_database_field": "5.x-dev",
-    "sunnysideup/flush": "5.x-dev",
-    "sunnysideup/permission_provider": "5.x-dev",
-    "sunnysideup/googleanalyticsbasics": "5.x-dev",
-    "sunnysideup/phone_field": "5.x-dev",
-    "sunnysideup/perfect_cms_images": "5.x-dev",
-    "sunnysideup/metatags": "5.x-dev",
-    "sunnysideup/release": "5.x-dev",
-    "sunnysideup/resize-all-images": "5.x-dev",
-    "sunnysideup/sentry-made-easy": "5.x-dev",
-    "sunnysideup/sanitise-class-name": "5.x-dev",
-    "sunnysideup/share_this_simple": "5.x-dev",
-    "sunnysideup/silverstripe-externalurlfield": "5.x-dev",
-    "sunnysideup/simple-template-caching": "5.x-dev",
-    "sunnysideup/site-wide-search": "5.x-dev",
-    "sunnysideup/test-email": "5.x-dev",
-    "sunnysideup/userforms-block-spam-with-keywords": "5.x-dev",
-    "sunnysideup/version-pruner": "5.x-dev",
-    "sunnysideup/export-all-from-modeladmin": "5.x-dev",
-    "sunnysideup/yes-no-any-filter": "5.x-dev",
-    "sunnysideup/dataintegritytests": "5.x-dev",
-    "sunnysideup/search-on-version-status": "5.x-dev",
-    "undefinedoffset/silverstripe-nocaptcha": "^2.1",
-    "undefinedoffset/sortablegridfield": "^2.0",
-    "symbiote/silverstripe-gridfieldextensions": "^4",
-    "symbiote/silverstripe-grouped-cms-menu": "^4.1",
-    "silverstripe/lumberjack": "^2 || ^3.0",
-    "silverstripe/hybridsessions": "^3",
+    "wilr/silverstripe-googlesitemaps": "^4.0",
+    "silverstripe/login-forms": "^6.2",
+    "sunnysideup/branding": "^5.0-dev",
+    "sunnysideup/cms_edit_link_field": "^13.0",
+    "sunnysideup/email_address_database_field": "^6.0",
+    "sunnysideup/userforms-block-spam-with-keywords": "^5.0-dev",
+    "undefinedoffset/silverstripe-nocaptcha": "^3.1",
+    "undefinedoffset/sortablegridfield": "^3.0",
+    "symbiote/silverstripe-gridfieldextensions": "^5.2",
+    "silverstripe/lumberjack": "^4.1",
+    "silverstripe/hybridsessions": "^4.0",
     "paragonie/constant_time_encoding": "^2 || ^3",
-    "silverstripe/mfa": "^5.0",
-    "silverstripe/totp-authenticator": "^5.0",
-    "silverstripe/securityreport": "*"
+    "silverstripe/mfa": "^6.0",
+    "silverstripe/totp-authenticator": "^6.1"
   },
   "require-dev": {
-    "sunnysideup/core-modules-dev": "5.x-dev"
+    "sunnysideup/core-modules-dev": "^5.0-dev"
   },
   "suggest": {
     "gurucomkz/silverstripe-critical-path-css": "faster loading",
@@ -162,6 +134,148 @@
       "php-http/discovery": true,
       "silverstripe/recipe-plugin": true,
       "silverstripe/vendor-plugin": true
+    }
+  },
+  "yet-to-update": {
+    "sunnysideup/avoid-child-deletion": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/basic-auth-better": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/cleaner_tinymce_config": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/cms-niceties": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/dashboard-welcome-quicklinks": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/duplicate-urlsegments": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/flush": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/permission_provider": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/googleanalyticsbasics": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/phone_field": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/perfect_cms_images": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/metatags": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/release": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/resize-all-images": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/sentry-made-easy": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/sanitise-class-name": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/share_this_simple": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/silverstripe-externalurlfield": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/simple-template-caching": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/site-wide-search": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/test-email": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/version-pruner": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/export-all-from-modeladmin": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/yes-no-any-filter": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/dataintegritytests": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "sunnysideup/search-on-version-status": {
+      "section": "require",
+      "current": "^5.0-dev",
+      "reason": "no-compatible-stable-release"
+    },
+    "symbiote/silverstripe-grouped-cms-menu": {
+      "section": "require",
+      "current": "^4.1",
+      "reason": "no-compatible-stable-release"
+    },
+    "silverstripe/securityreport": {
+      "section": "require",
+      "current": "*",
+      "reason": "no-compatible-stable-release"
     }
   }
 }

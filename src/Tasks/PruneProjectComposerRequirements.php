@@ -2,6 +2,8 @@
 
 namespace Sunnysideup\CoreModules\Tasks;
 
+use Symfony\Component\Console\Input\InputInterface;
+use SilverStripe\Console\PolyOutput;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;
@@ -12,11 +14,11 @@ use SilverStripe\ORM\DB;
 
 class PruneProjectComposerRequirements extends BuildTask implements Flushable
 {
-    protected $title = 'Prune Project Composer Requirements';
+    protected string $title = 'Prune Project Composer Requirements';
 
     protected $description = 'Removes all requirements from the core that are also required by vendor packages.';
 
-    private static $segment = 'prune-project-composer-requirements';
+    protected static string $commandName = 'prune-project-composer-requirements';
 
     private static $run_on_flush = true;
 
@@ -44,16 +46,17 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
         'php',
     ];
 
-    public function run($request)
+    protected function execute(InputInterface $input, PolyOutput $output): int
     {
         // Base folder containing composer.json and vendor directory
         $baseFolder = Director::baseFolder();
-
         try {
             $this->removeUnusedPackages($baseFolder);
-        } catch (RuntimeException $e) {
-            echo 'Error: ' . $e->getMessage() . PHP_EOL;
+        } catch (RuntimeException $runtimeException) {
+            echo 'Error: ' . $runtimeException->getMessage() . PHP_EOL;
         }
+
+        return 0;
     }
 
     protected function removeUnusedPackages(string $basePath): void
@@ -99,6 +102,7 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
                 if (in_array($package, $skip)) {
                     continue;
                 }
+
                 if (isset($baseRequire[$package])) {
                     DB::alteration_message('Removing ' . $package . ' from ' . $baseComposerPath . ' as it is also required by ' . $packageName, 'deleted');
                     unset($baseRequire[$package]);
@@ -138,6 +142,7 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
                 }
             }
         }
+
         return $composerFiles;
     }
 
