@@ -3,7 +3,7 @@
 use SilverStripe\HybridSessions\HybridSession;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Environment;
-use SilverStripe\Security\Security;
+use Sunnysideup\CoreModules\Tasks\Security;
 
 if (Director::isDev()) {
     if (!Security::allow_dev()) {
