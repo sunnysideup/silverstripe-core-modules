@@ -5,6 +5,7 @@
   "require": {
     "php": ">8.3",
     "silverstripe/spamprotection": "^5.0",
+    "silverstripe/htmleditor-tinymce": "^1.0",
     "silverstripe/recipe-cms": "^6.0",
     "silverstripe/recipe-plugin": "^2.0",
     "wilr/silverstripe-googlesitemaps": "^4.0",
