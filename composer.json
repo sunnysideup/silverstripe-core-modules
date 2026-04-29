@@ -49,7 +49,7 @@
     "symbiote/silverstripe-gridfieldextensions": "^5.2",
     "undefinedoffset/silverstripe-nocaptcha": "^3.1",
     "undefinedoffset/sortablegridfield": "^3.0",
-    "wilr/silverstripe-googlesitemaps": "^4.0",
+    "wilr/silverstripe-googlesitemaps": "^4.0"
   },
   "require-dev": {
     "sunnysideup/core-modules-dev": "dev-main"
