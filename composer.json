@@ -4,7 +4,7 @@
   "description": "Core modules for Silverstripe CMS",
   "require": {
     "php": ">8.3",
-"bigfork/silverstripe-grouped-cms-menu-fork": "dev-master",
+    "bigfork/silverstripe-grouped-cms-menu-fork": "dev-master",
     "paragonie/constant_time_encoding": "^2 || ^3",
     "silverstripe/htmleditor-tinymce": "^1.0",
     "silverstripe/hybridsessions": "^4.0",
