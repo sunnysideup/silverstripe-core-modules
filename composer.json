@@ -43,7 +43,6 @@
     "sunnysideup/simple-template-caching": "dev-main",
     "sunnysideup/site-wide-search": "dev-main",
     "sunnysideup/test-email": "dev-main",
-    "sunnysideup/userforms-block-spam-with-keywords": "dev-main",
     "sunnysideup/version-pruner": "dev-main",
     "sunnysideup/yes-no-any-filter": "dev-main",
     "symbiote/silverstripe-gridfieldextensions": "^5.2",
