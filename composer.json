@@ -42,6 +42,7 @@
     "sunnysideup/silverstripe-externalurlfield": "dev-main",
     "sunnysideup/simple-template-caching": "dev-main",
     "sunnysideup/site-wide-search": "dev-main",
+    "sunnysideup/sitehost-cache-purge": "dev-main",
     "sunnysideup/test-email": "dev-main",
     "sunnysideup/version-pruner": "dev-main",
     "sunnysideup/yes-no-any-filter": "dev-main",
