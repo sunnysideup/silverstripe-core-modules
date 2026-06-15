@@ -157,8 +157,13 @@
     {
       "type": "vcs",
       "url": "git@github.com:sunnysideup/silverstripe-schema.git"
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:sunnysideup/silverstripe-sentry.git"
     }
   ],
+
   "config": {
     "allow-plugins": {
       "php-http/discovery": true,
