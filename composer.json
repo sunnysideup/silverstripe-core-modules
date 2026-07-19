@@ -50,6 +50,7 @@
     "undefinedoffset/silverstripe-nocaptcha": "^3.1",
     "undefinedoffset/sortablegridfield": "^3.0",
     "wilr/silverstripe-googlesitemaps": "^4.0",
+    "sunnysideup/silverstripe-garbage-collector": "dev-main",
     "sunnysideup/silverstripe-unused-file-report": "dev-main"
   },
   "require-dev": {
