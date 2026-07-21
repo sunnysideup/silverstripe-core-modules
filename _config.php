@@ -2,6 +2,7 @@
 
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Environment;
+use SilverStripe\HybridSessions\HybridSession;
 
 if (Director::isDev()) {
     if (! Environment::getEnv('SS_ALLOW_AS_DEV_SITE')) {
@@ -22,11 +23,15 @@ if (Director::isDev()) {
                 Make sure to complete MFA Settings - add a SS_MFA_SECRET_KEY to your .env file'
         );
     }
-    if (class_exists('SilverStripe\HybridSessions\HybridSession') && ! Environment::getEnv('SS_SESSION_KEY')) {
-        user_error('
-                    Make sure to complete HybridSession
-                    Add SS_SESSION_KEY to your .env file.
-                    Also see:  https://github.com/silverstripe/silverstripe-hybridsessions
-                ');
+    if (class_exists('SilverStripe\HybridSessions\HybridSession') ) {
+        if(!Environment::getEnv('SS_SESSION_KEY')) {
+            user_error('
+                Make sure to complete HybridSession
+                Add SS_SESSION_KEY to your .env file.
+                Also see:  https://github.com/silverstripe/silverstripe-hybridsessions
+            ');
+        } else {
+            HybridSession::init(Environment::getEnv('SS_SESSION_KEY'));
+        }
     }
 }
