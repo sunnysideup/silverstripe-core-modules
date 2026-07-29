@@ -23,8 +23,8 @@ if (Director::isDev()) {
                 Make sure to complete MFA Settings - add a SS_MFA_SECRET_KEY to your .env file'
         );
     }
-    if (class_exists('SilverStripe\HybridSessions\HybridSession') ) {
-        if(!Environment::getEnv('SS_SESSION_KEY')) {
+    if (class_exists('SilverStripe\HybridSessions\HybridSession')) {
+        if (!Environment::getEnv('SS_SESSION_KEY')) {
             user_error('
                 Make sure to complete HybridSession
                 Add SS_SESSION_KEY to your .env file.
