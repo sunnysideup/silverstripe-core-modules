@@ -4,7 +4,7 @@ use SilverStripe\Control\Director;
 use SilverStripe\Core\Environment;
 use SilverStripe\HybridSessions\HybridSession;
 
-if (Director::isDev()) {
+if (Director::isDev() && !Director::is_cli()) {
     if (! Environment::getEnv('SS_ALLOW_AS_DEV_SITE')) {
         $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN';
         if (strpos($ip, ',') !== false) {
