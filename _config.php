@@ -4,7 +4,7 @@ use SilverStripe\Control\Director;
 use SilverStripe\Core\Environment;
 use SilverStripe\HybridSessions\HybridSession;
 
-if (Director::isDev()) {
+if (Director::isDev() && !Director::is_cli()) {
     if (! Environment::getEnv('SS_ALLOW_AS_DEV_SITE')) {
         $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN';
         if (strpos($ip, ',') !== false) {
@@ -23,8 +23,8 @@ if (Director::isDev()) {
                 Make sure to complete MFA Settings - add a SS_MFA_SECRET_KEY to your .env file'
         );
     }
-    if (class_exists('SilverStripe\HybridSessions\HybridSession') ) {
-        if(!Environment::getEnv('SS_SESSION_KEY')) {
+    if (class_exists('SilverStripe\HybridSessions\HybridSession')) {
+        if (!Environment::getEnv('SS_SESSION_KEY')) {
             user_error('
                 Make sure to complete HybridSession
                 Add SS_SESSION_KEY to your .env file.
