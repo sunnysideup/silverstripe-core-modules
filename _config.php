@@ -12,7 +12,17 @@ if (Director::isDev()) {
         }
         $allowed = array_filter(array_merge(explode(',', Environment::getEnv('SS_ALLOW_AS_DEV_SITE_SITES')), ['127.0.0.1', '::1']));
         if (! in_array($ip, $allowed)) {
-            die('Site under urgent maintenance. Please come back soon.');
+            if(Director::is_cli()) {
+                echo '';
+                echo '====================';
+                echo 'Please add SS_ALLOW_AS_DEV_SITE to the .env file to bypass this message.';
+                echo '';
+            }
+            die('
+=============
+Site under urgent maintenance. Please come back soon.
+=============
+');
         }
         unset($allowed, $ip);
     }
