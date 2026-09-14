@@ -10,7 +10,7 @@ if (Director::isDev()) {
         if (strpos($ip, ',') !== false) {
             $ip = explode(',', $ip)[0];
         }
-        $allowed = array_filter(array_merge(explode(',', Environment::getEnv('SS_ALLOW_AS_DEV_SITE')), ['127.0.0.1', '::1']));
+        $allowed = array_filter(array_merge(explode(',', Environment::getEnv('SS_ALLOW_AS_DEV_SITE_SITES')), ['127.0.0.1', '::1']));
         if (! in_array($ip, $allowed)) {
             die('Site under urgent maintenance. Please come back soon.');
         }
@@ -23,8 +23,8 @@ if (Director::isDev()) {
                 Make sure to complete MFA Settings - add a SS_MFA_SECRET_KEY to your .env file'
         );
     }
-    if (class_exists('SilverStripe\HybridSessions\HybridSession') ) {
-        if(!Environment::getEnv('SS_SESSION_KEY')) {
+    if (class_exists('SilverStripe\HybridSessions\HybridSession')) {
+        if (!Environment::getEnv('SS_SESSION_KEY')) {
             user_error('
                 Make sure to complete HybridSession
                 Add SS_SESSION_KEY to your .env file.
