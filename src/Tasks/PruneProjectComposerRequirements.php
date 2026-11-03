@@ -46,6 +46,20 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
 
     public function run($request)
     {
+        if ($request) {
+            if (! Director::is_cli()) {
+                echo 'This task can only be run on the command line.';
+
+                return;
+            }
+        }
+
+        if (Director::isLive()) {
+            echo 'This task can not be run on a live site.' . PHP_EOL;
+
+            return;
+        }
+
         // Base folder containing composer.json and vendor directory
         $baseFolder = Director::baseFolder();
 
@@ -113,6 +127,12 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
 
         if ((bool) $jsonData === false) {
             throw new RuntimeException('Failed to encode JSON for base composer.json: ' . json_last_error_msg());
+        }
+
+        // keep a copy of the original, so that a bad run can be undone.
+        $backupPath = $baseComposerPath . '.bak';
+        if (! copy($baseComposerPath, $backupPath)) {
+            throw new RuntimeException('Could not make a backup copy of ' . $baseComposerPath . ' so not changing it.');
         }
 
         file_put_contents($baseComposerPath, $jsonData);
