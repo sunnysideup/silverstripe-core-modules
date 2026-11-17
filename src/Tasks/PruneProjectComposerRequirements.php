@@ -2,31 +2,46 @@
 
 namespace Sunnysideup\CoreModules\Tasks;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use SilverStripe\PolyExecution\PolyOutput;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
 use RuntimeException;
 use SilverStripe\Control\Director;
+use Psr\Log\LoggerInterface;
 use SilverStripe\Core\Flushable;
+use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Dev\BuildTask;
+use SilverStripe\PolyExecution\PolyOutput;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
 
+/**
+ * Removes requirements from the project composer.json that are already
+ * installed anyway because another installed package requires them.
+ *
+ * - `require` is pruned using the non-dev dependency graph only
+ *   (so a package that is only required by a dev package stays in `require`).
+ * - `require-dev` is pruned using the full dependency graph
+ *   (and anything already in `require` is removed from `require-dev`).
+ *
+ * A requirement is only removed if it is still reachable from the remaining
+ * requirements, so circular requirements can not remove each other.
+ *
+ * The dependency graph is read from vendor/composer/installed.json.
+ * In dev mode this runs automatically on flush (see `run_on_flush`).
+ */
 class PruneProjectComposerRequirements extends BuildTask implements Flushable
 {
     protected string $title = 'Prune Project Composer Requirements';
 
-    protected static string $description = 'Removes all requirements from the core that are also required by vendor packages.';
+    protected static string $description = 'Removes all requirements (and dev requirements) from the project composer.json that are also required by installed vendor packages.';
 
     protected static string $commandName = 'prune-project-composer-requirements';
 
+    /**
+     * Run automatically on flush (dev mode only).
+     *
+     * @config
+     * @var bool
+     */
     private static $run_on_flush = true;
-
-    public static function flush()
-    {
-        // @TODO (SS6 upgrade): flush() cannot receive $output; skipping auto-run on flush.
-        // Previously called singleton(self::class)->run(null) which is no longer valid.
-    }
 
     /**
      * List of packages to skip when pruning requirements.
@@ -45,6 +60,27 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
         'php',
     ];
 
+    public static function flush()
+    {
+        if (! static::config()->get('run_on_flush')) {
+            return;
+        }
+        if (! Director::isDev()) {
+            return;
+        }
+        try {
+            $messages = static::create()->pruneComposerJson(Director::baseFolder());
+            foreach ($messages as $message) {
+                // only log changes, not "nothing to do".
+                if (strpos($message, 'Removing ') === 0) {
+                    Injector::inst()->get(LoggerInterface::class)->info('PruneProjectComposerRequirements: ' . $message);
+                }
+            }
+        } catch (RuntimeException $runtimeException) {
+            // never break a flush because of this
+        }
+    }
+
     protected function execute(InputInterface $input, PolyOutput $output): int
     {
         if (! Director::is_cli()) {
@@ -59,10 +95,10 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
             return Command::FAILURE;
         }
 
-        // Base folder containing composer.json and vendor directory
-        $baseFolder = Director::baseFolder();
         try {
-            $this->removeUnusedPackages($baseFolder, $output);
+            foreach ($this->pruneComposerJson(Director::baseFolder()) as $message) {
+                $output->writeln($message);
+            }
         } catch (RuntimeException $runtimeException) {
             $output->writeln('Error: ' . $runtimeException->getMessage());
         }
@@ -70,63 +106,79 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
         return Command::SUCCESS;
     }
 
-    protected function removeUnusedPackages(string $basePath, PolyOutput $output): void
+    /**
+     * @return array<string> log messages
+     */
+    public function pruneComposerJson(string $basePath): array
     {
+        $messages = [];
         $baseComposerPath = rtrim($basePath, '/') . '/composer.json';
-        $skip = $this->config()->get('packages_to_skip');
-
         if (! file_exists($baseComposerPath)) {
             throw new RuntimeException('Base composer.json not found at: ' . $baseComposerPath);
         }
 
-        // Load and decode the base composer.json
         $baseComposer = json_decode(file_get_contents($baseComposerPath), true);
-
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new RuntimeException('Invalid JSON in base composer.json.');
         }
 
-        if (! isset($baseComposer['require'])) {
-            throw new RuntimeException('Base composer.json does not have a "require" section.');
-        }
+        $require = $baseComposer['require'] ?? [];
+        $requireDev = $baseComposer['require-dev'] ?? [];
+        $graph = $this->getDependencyGraph($basePath);
+        $skip = $this->config()->get('packages_to_skip');
 
-        $baseRequire = $baseComposer['require'];
-
-        $composerFiles = $this->getComposerFiles();
-
-        foreach ($composerFiles as $packageComposerPath) {
-            $packageComposer = json_decode(file_get_contents($packageComposerPath), true);
-
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                $output->writeln('Skipping invalid JSON file: ' . $packageComposerPath);
+        // 1. require: only reachable through non-dev packages
+        foreach (array_keys($require) as $package) {
+            if ($this->isSkipped($package, $skip)) {
                 continue;
             }
-
-            if (! isset($packageComposer['require'])) {
-                $output->writeln('Skipping file without "require" section: ' . $packageComposerPath);
-                continue;
-            }
-
-            $packageRequire = $packageComposer['require'];
-            $packageName = $packageComposer['name'] ?? 'unknown';
-            foreach (array_keys($packageRequire) as $package) {
-                if (in_array($package, $skip)) {
-                    continue;
-                }
-
-                if (isset($baseRequire[$package])) {
-                    $output->writeln('Removing ' . $package . ' from ' . $baseComposerPath . ' as it is also required by ' . $packageName);
-                    unset($baseRequire[$package]);
-                }
+            $remaining = $require;
+            unset($remaining[$package]);
+            $by = $this->findRequiringPackage($package, array_keys($remaining), $graph['nonDev']);
+            if ($by !== null) {
+                $messages[] = 'Removing ' . $package . ' from require as it is also required by ' . $by;
+                $require = $remaining;
             }
         }
 
-        $baseComposer['require'] = $baseRequire;
+        // 2. require-dev: reachable through anything (including require)
+        foreach (array_keys($requireDev) as $package) {
+            if (isset($require[$package])) {
+                $messages[] = 'Removing ' . $package . ' from require-dev as it is also in require';
+                unset($requireDev[$package]);
+                continue;
+            }
+            if ($this->isSkipped($package, $skip)) {
+                continue;
+            }
+            $remaining = $requireDev;
+            unset($remaining[$package]);
+            $roots = array_merge(array_keys($require), array_keys($remaining));
+            $by = $this->findRequiringPackage($package, $roots, $graph['all']);
+            if ($by !== null) {
+                $messages[] = 'Removing ' . $package . ' from require-dev as it is also required by ' . $by;
+                $requireDev = $remaining;
+            }
+        }
 
-        $jsonData = json_encode($baseComposer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+        if ($messages === []) {
+            $messages[] = 'Nothing to remove from ' . $baseComposerPath;
+            return $messages;
+        }
 
-        if ((bool) $jsonData === false) {
+        $baseComposer['require'] = $require;
+        if ($requireDev === []) {
+            unset($baseComposer['require-dev']);
+        } else {
+            $baseComposer['require-dev'] = $requireDev;
+        }
+
+        $jsonData = json_encode($baseComposer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        if ($jsonData === false) {
             throw new RuntimeException('Failed to encode JSON for base composer.json: ' . json_last_error_msg());
+        }
+        if (! is_writable($baseComposerPath)) {
+            throw new RuntimeException('Can not write to ' . $baseComposerPath);
         }
 
         // keep a copy of the original, so that a bad run can be undone.
@@ -135,36 +187,82 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
             throw new RuntimeException('Could not make a backup copy of ' . $baseComposerPath . ' so not changing it.');
         }
 
-        file_put_contents($baseComposerPath, $jsonData);
+        file_put_contents($baseComposerPath, $jsonData . "\n");
+        $messages[] = 'Updated ' . $baseComposerPath;
 
-        $output->writeln('Unused packages removed from ' . $baseComposerPath);
+        return $messages;
     }
 
-    protected function getComposerFiles(): array
+    protected function isSkipped(string $package, array $skip): bool
     {
-        $composerFiles = [];
-        $vendorDir = $this->getVendorDir();
-        $iterator = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($vendorDir, RecursiveDirectoryIterator::SKIP_DOTS)
-        );
+        return in_array($package, $skip, true)
+            || $package === 'php'
+            || strpos($package, 'ext-') === 0
+            || strpos($package, 'lib-') === 0;
+    }
 
-        foreach ($iterator as $file) {
-            if ($file->isFile() && $file->getFilename() === 'composer.json') {
-                $relativePath = str_replace($vendorDir . '/', '', $file->getPath());
-                $pathParts = explode('/', $relativePath);
-
-                // Ensure the path matches vendor/vendor-name/package-name/composer.json
-                if (count($pathParts) === 2) {
-                    $composerFiles[] = $file->getRealPath();
+    /**
+     * Returns the name of the (installed) package through which $package is
+     * still reachable starting from $roots, or null if it is not reachable.
+     * Roots themselves do not count (we are looking for a package that requires it).
+     */
+    protected function findRequiringPackage(string $package, array $roots, array $graph): ?string
+    {
+        $seen = [];
+        $queue = [];
+        foreach ($roots as $root) {
+            if ($root === $package) {
+                continue;
+            }
+            $queue[] = $root;
+            $seen[$root] = true;
+        }
+        while ($queue !== []) {
+            $current = array_shift($queue);
+            foreach ($graph[$current] ?? [] as $dependency) {
+                if ($dependency === $package) {
+                    return $current;
+                }
+                if (! isset($seen[$dependency])) {
+                    $seen[$dependency] = true;
+                    $queue[] = $dependency;
                 }
             }
         }
 
-        return $composerFiles;
+        return null;
     }
 
-    public function getVendorDir(): string
+    /**
+     * @return array{all: array<string, array<string>>, nonDev: array<string, array<string>>}
+     */
+    protected function getDependencyGraph(string $basePath): array
     {
-        return Director::baseFolder() . '/vendor';
+        $path = rtrim($basePath, '/') . '/vendor/composer/installed.json';
+        if (! file_exists($path)) {
+            throw new RuntimeException('Could not find ' . $path . ' - run composer install first.');
+        }
+        $installed = json_decode(file_get_contents($path), true);
+        if (! is_array($installed)) {
+            throw new RuntimeException('Invalid JSON in ' . $path);
+        }
+        $packages = $installed['packages'] ?? $installed;
+        $devNames = array_flip($installed['dev-package-names'] ?? []);
+
+        $all = [];
+        $nonDev = [];
+        foreach ($packages as $package) {
+            $name = $package['name'] ?? null;
+            if (! $name) {
+                continue;
+            }
+            $requires = array_keys($package['require'] ?? []);
+            $all[$name] = $requires;
+            if (! isset($devNames[$name])) {
+                $nonDev[$name] = $requires;
+            }
+        }
+
+        return ['all' => $all, 'nonDev' => $nonDev];
     }
 }
