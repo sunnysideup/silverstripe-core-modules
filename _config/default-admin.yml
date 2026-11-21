@@ -1,0 +1,6 @@
+---
+Name: core-modules-clean-default-admin
+---
+SilverStripe\Security\Member:
+  extensions:
+    - Sunnysideup\CoreModules\Extensions\CleanDefaultAdminMemberExtension

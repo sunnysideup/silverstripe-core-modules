@@ -12,9 +12,9 @@ use SilverStripe\Security\Member;
 
 class Security implements Flushable
 {
-    public static function flush(): void
+    public static function flush(bool $force = false): void
     {
-        if (! Director::is_cli()) {
+        if (! $force && ! Director::is_cli()) {
             return;
         }
 
