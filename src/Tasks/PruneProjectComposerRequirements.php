@@ -8,6 +8,7 @@ use Psr\Log\LoggerInterface;
 use SilverStripe\Core\Flushable;
 use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Dev\BuildTask;
+use SilverStripe\ORM\DB;
 use SilverStripe\PolyExecution\PolyOutput;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -77,7 +78,8 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
                 }
             }
         } catch (RuntimeException $runtimeException) {
-            // never break a flush because of this
+            // never break a flush because of this, but do let the user know.
+            DB::alteration_message('PruneProjectComposerRequirements: ' . $runtimeException->getMessage(), 'deleted');
         }
     }
 
@@ -183,7 +185,10 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
 
         // keep a copy of the original, so that a bad run can be undone.
         $backupPath = $baseComposerPath . '.bak';
-        if (! copy($baseComposerPath, $backupPath)) {
+        // the directory (not just the file) needs to be writable to create the backup.
+        $backupIsPossible = is_writable(dirname($baseComposerPath))
+            || (file_exists($backupPath) && is_writable($backupPath));
+        if (! $backupIsPossible || ! @copy($baseComposerPath, $backupPath)) {
             throw new RuntimeException('Could not make a backup copy of ' . $baseComposerPath . ' so not changing it.');
         }
 
