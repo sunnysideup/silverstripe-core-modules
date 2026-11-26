@@ -69,6 +69,9 @@ class PruneProjectComposerRequirements extends BuildTask implements Flushable
         if (! Director::isDev()) {
             return;
         }
+        if (! Director::is_cli()) {
+            return;
+        }
         try {
             $messages = static::create()->pruneComposerJson(Director::baseFolder());
             foreach ($messages as $message) {
